@@ -13,14 +13,19 @@ import CoreData
 class TravelLocationsMapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var tapToDeleteView: UIView!
     
     var dataController: DataController!
     
-    var annotations: [MKPointAnnotation] = []
+    var editModeEnabled: Bool = false
+    
+    // TODO: create an NSFetchedResultsController instance
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        tapToDeleteView.isHidden = true
         
         // Retrieve the map region.
         let center = CLLocationCoordinate2D(latitude: UserDefaults.standard.double(forKey: "Latitude"), longitude: UserDefaults.standard.double(forKey: "Longitude"))
@@ -30,20 +35,18 @@ class TravelLocationsMapViewController: UIViewController {
         // Fetch pins from the data controller.
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
         if let result = try? dataController.viewContext.fetch(fetchRequest) {
-            populateAnnotationsArray(from: result)
-            self.mapView.addAnnotations(annotations)
+            populateAnnotations(from: result)
         }
     }
     
-    func populateAnnotationsArray(from pins: [Pin]) {
+    func populateAnnotations(from pins: [Pin]) {
         // Takes an array of type Pin and creates an annotations and appends them to the
         // annotations array.
-        annotations.removeAll()
         for pin in pins {
             let annotation = MKPointAnnotation()
             annotation.coordinate.latitude = pin.latitude
             annotation.coordinate.longitude = pin.longitude
-            annotations.append(annotation)
+            self.mapView.addAnnotation(annotation)
         }
     }
     
@@ -56,6 +59,7 @@ class TravelLocationsMapViewController: UIViewController {
         return annotation
     }
     
+    
     @IBAction func handleLongPress(_ sender: UILongPressGestureRecognizer) {
         let pin = Pin(context: dataController.viewContext)
         let pressLocation = sender.location(in: mapView)
@@ -64,8 +68,23 @@ class TravelLocationsMapViewController: UIViewController {
         pin.longitude = coordinate.longitude
         try? dataController.viewContext.save()
         let annotation = convertToAnnotation(pin: pin)
-        annotations.append(annotation)
         mapView.addAnnotation(annotation)
+    }
+    
+    @IBAction func editPressed(_ sender: UIBarButtonItem) {
+        //let tapToDeleteView: UIView = UIView(frame: CGRect()
+        
+        if sender.title == "Edit" {
+            tapToDeleteView.isHidden = false
+            sender.title = "Done"
+            editModeEnabled = true
+        } else if sender.title == "Done" {
+            tapToDeleteView.isHidden = true
+            sender.title = "Edit"
+            editModeEnabled = false
+        }
+        
+        
     }
 }
 
@@ -79,5 +98,10 @@ extension TravelLocationsMapViewController: MKMapViewDelegate {
         UserDefaults.standard.set(mapView.region.span.longitudeDelta, forKey: "DeltaLongitude")
     }
     
-    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if editModeEnabled {
+            mapView.removeAnnotation(view.annotation!)
+            
+        }
+    }
 }

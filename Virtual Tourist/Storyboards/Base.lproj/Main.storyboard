@@ -26,21 +26,46 @@
                                     <outletCollection property="gestureRecognizers" destination="0cC-hi-ENk" appends="YES" id="9NC-w2-sda"/>
                                 </connections>
                             </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dnd-WP-u5p">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to Delete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RV6-e1-lgA">
+                                        <rect key="frame" x="120" y="15.5" width="135" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="RV6-e1-lgA" firstAttribute="centerY" secondItem="Dnd-WP-u5p" secondAttribute="centerY" id="0nR-VV-W5l"/>
+                                    <constraint firstAttribute="height" constant="60" id="2Vu-o6-IZE"/>
+                                    <constraint firstItem="RV6-e1-lgA" firstAttribute="centerX" secondItem="Dnd-WP-u5p" secondAttribute="centerX" id="cSa-8n-9mu"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="ODT-24-DPy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="4b5-Wn-vMU"/>
-                            <constraint firstItem="ODT-24-DPy" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Bp1-zD-fhR"/>
-                            <constraint firstItem="ODT-24-DPy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="WXZ-a4-FXL"/>
-                            <constraint firstItem="ODT-24-DPy" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="YGM-zJ-Bvv"/>
+                            <constraint firstItem="Dnd-WP-u5p" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="0X6-8G-pi4"/>
+                            <constraint firstItem="Dnd-WP-u5p" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="SLp-Cj-Wuu"/>
+                            <constraint firstItem="ODT-24-DPy" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Uob-el-pQj"/>
+                            <constraint firstItem="ODT-24-DPy" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Wls-F8-9VW"/>
+                            <constraint firstItem="ODT-24-DPy" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="h45-KO-XWQ"/>
+                            <constraint firstItem="Dnd-WP-u5p" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="mKg-M1-NyZ"/>
+                            <constraint firstItem="ODT-24-DPy" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="zFo-Rr-7m3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="A7g-Z7-qko">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" id="8pF-yh-unh"/>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" id="8pF-yh-unh">
+                            <connections>
+                                <action selector="editPressed:" destination="BYZ-38-t0r" id="xYL-1L-AnV"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="ODT-24-DPy" id="tEZ-qz-3M5"/>
+                        <outlet property="tapToDeleteView" destination="Dnd-WP-u5p" id="kUK-t3-ybU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
