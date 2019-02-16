@@ -13,6 +13,8 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    let dataController = DataController(modelName: "Virtual_Tourist")
 
     func ckeckIfFirstLaunch() {
         if UserDefaults.standard.bool(forKey: "HasLaunchedBefore") {
@@ -23,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set(0.0, forKey: "Latitude")
             UserDefaults.standard.set(0.0, forKey: "Longitude")
             UserDefaults.standard.set(1.0, forKey: "DeltaLatitude")
-            UserDefaults.standard.set(0.0, forKey: "DeltaLongitude")
+            UserDefaults.standard.set(1.0, forKey: "DeltaLongitude")
             UserDefaults.standard.synchronize()
         }
     }
@@ -35,6 +37,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        dataController.load()
+        
+        // Inject the data controller dependency into Travel Locations Map View Controller
+        let navigationController = window?.rootViewController as! UINavigationController
+        let travelLocationsMapViewController = navigationController.topViewController as! TravelLocationsMapViewController
+        travelLocationsMapViewController.dataController = dataController
         return true
     }
 
