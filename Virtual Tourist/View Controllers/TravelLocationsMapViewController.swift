@@ -49,8 +49,6 @@ class TravelLocationsMapViewController: UIViewController, NSFetchedResultsContro
         if let result = fetchedResultsController.fetchedObjects {
             populateAnnotations(from: result)
         }
-        
-        print(fetchedResultsController.fetchedObjects?.count as Any)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
