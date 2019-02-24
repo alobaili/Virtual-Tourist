@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class TravelLocationsMapViewController: UIViewController {
+class TravelLocationsMapViewController: UIViewController, NSFetchedResultsControllerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tapToDeleteView: UIView!
@@ -19,11 +19,10 @@ class TravelLocationsMapViewController: UIViewController {
     
     var editModeEnabled: Bool = false
     
-    // TODO: create an NSFetchedResultsController instance
+    var fetchedResultsController: NSFetchedResultsController<Pin>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         tapToDeleteView.isHidden = true
         
@@ -34,9 +33,29 @@ class TravelLocationsMapViewController: UIViewController {
         
         // Fetch pins from the data controller.
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
-        if let result = try? dataController.viewContext.fetch(fetchRequest) {
+        let sortDiscreptor = NSSortDescriptor(key: "latitude", ascending: false)
+        fetchRequest.sortDescriptors = [sortDiscreptor]
+        
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+        
+        do {
+            try fetchedResultsController.performFetch()
+        } catch {
+            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+        }
+        
+        if let result = fetchedResultsController.fetchedObjects {
             populateAnnotations(from: result)
         }
+        
+        print(fetchedResultsController.fetchedObjects?.count as Any)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        fetchedResultsController = nil
     }
     
     func populateAnnotations(from pins: [Pin]) {
@@ -61,14 +80,31 @@ class TravelLocationsMapViewController: UIViewController {
     
     
     @IBAction func handleLongPress(_ sender: UILongPressGestureRecognizer) {
-        let pin = Pin(context: dataController.viewContext)
-        let pressLocation = sender.location(in: mapView)
-        let coordinate = mapView.convert(pressLocation, toCoordinateFrom: mapView)
-        pin.latitude = coordinate.latitude
-        pin.longitude = coordinate.longitude
-        try? dataController.viewContext.save()
-        let annotation = convertToAnnotation(pin: pin)
-        mapView.addAnnotation(annotation)
+        
+        // only handle the very begining of the long press gesture
+        if (sender.state == UIGestureRecognizer.State.began) {
+            
+            // initialize a new pin instance with the data controler's view context.
+            let pin = Pin(context: dataController.viewContext)
+            
+            // get the long press location from the map view.
+            let pressLocation = sender.location(in: mapView)
+            
+            // convert the location to coordinate
+            let coordinate = mapView.convert(pressLocation, toCoordinateFrom: mapView)
+            
+            // assign the coordinate lon & lat to the pin instance.
+            pin.latitude = coordinate.latitude
+            pin.longitude = coordinate.longitude
+            
+            // save the pin to the view context.
+            try? dataController.viewContext.save()
+            
+            // create a new annotation from the pin and present it in the map view.
+            let annotation = convertToAnnotation(pin: pin)
+            mapView.addAnnotation(annotation)
+            
+        }
     }
     
     @IBAction func editPressed(_ sender: UIBarButtonItem) {
@@ -83,8 +119,6 @@ class TravelLocationsMapViewController: UIViewController {
             sender.title = "Edit"
             editModeEnabled = false
         }
-        
-        
     }
 }
 
@@ -100,8 +134,22 @@ extension TravelLocationsMapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         if editModeEnabled {
-            mapView.removeAnnotation(view.annotation!)
+            var pinToDelete: Pin
             
+            // loop through the pins array and look for the pin that is selected, if it is found, delete it from the view context.
+            for pin in (fetchedResultsController?.fetchedObjects)! {
+                if pin.latitude == view.annotation?.coordinate.latitude && pin.longitude == view.annotation?.coordinate.longitude {
+                    pinToDelete = pin
+                    dataController.viewContext.delete(pinToDelete)
+                    do {
+                        try dataController.viewContext.save()
+                    } catch {
+                        fatalError("couldn't save view context: \(error.localizedDescription)")
+                    }
+                }
+            }
+            
+            mapView.removeAnnotation(view.annotation!)
         }
     }
 }
