@@ -15,6 +15,7 @@
 		4B6DA7772217F1040030B919 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B6DA7752217F1040030B919 /* LaunchScreen.storyboard */; };
 		4B6DA784221817350030B919 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6DA783221817350030B919 /* DataController.swift */; };
 		4B6DA78622181B890030B919 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6DA78522181B890030B919 /* ActivityIndicator.swift */; };
+		4B90587F22231E04007F6EAE /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B90587E22231E04007F6EAE /* PhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		4B6DA7782217F1040030B919 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4B6DA783221817350030B919 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		4B6DA78522181B890030B919 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		4B90587E22231E04007F6EAE /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				4B6DA76B2217F1020030B919 /* TravelLocationsMapViewController.swift */,
+				4B90587E22231E04007F6EAE /* PhotoAlbumViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -189,6 +192,7 @@
 				4B6DA7722217F1020030B919 /* Virtual_Tourist.xcdatamodeld in Sources */,
 				4B6DA784221817350030B919 /* DataController.swift in Sources */,
 				4B6DA76A2217F1020030B919 /* AppDelegate.swift in Sources */,
+				4B90587F22231E04007F6EAE /* PhotoAlbumViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
