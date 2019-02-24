@@ -21,6 +21,8 @@ class TravelLocationsMapViewController: UIViewController, NSFetchedResultsContro
     
     var fetchedResultsController: NSFetchedResultsController<Pin>!
     
+    var selectedPin: Pin!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -118,6 +120,12 @@ class TravelLocationsMapViewController: UIViewController, NSFetchedResultsContro
             editModeEnabled = false
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let viewController = segue.destination as? PhotoAlbumViewController
+        viewController?.dataController = dataController
+        viewController?.pin = selectedPin
+    }
 }
 
 extension TravelLocationsMapViewController: MKMapViewDelegate {
@@ -153,6 +161,14 @@ extension TravelLocationsMapViewController: MKMapViewDelegate {
             }
             
             mapView.removeAnnotation(view.annotation!)
+        } else {
+            for pin in (fetchedResultsController?.fetchedObjects)! {
+                if pin.latitude == view.annotation?.coordinate.latitude && pin.longitude == view.annotation?.coordinate.longitude {
+                    selectedPin = pin
+                }
+            }
+            
+            performSegue(withIdentifier: "toPhotoAlbum", sender: Any?.self)
         }
     }
 }
