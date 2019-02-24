@@ -131,6 +131,11 @@ extension TravelLocationsMapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        
+        // Prevent the selected annotation from animating the selection (the default behaviour is enlarging the annotation view when selected)
+        // which keeps the pin in the selected state even after navigating back from the photo album view.
+        mapView.deselectAnnotation(view.annotation, animated: false)
+        
         if editModeEnabled {
             var pinToDelete: Pin
             
