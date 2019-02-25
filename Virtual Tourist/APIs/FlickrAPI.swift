@@ -18,10 +18,8 @@ class FlickrAPI {
     // Shared session
     var session = URLSession.shared
     
-    var urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=49a377d7872c06dfe502030e66f5f912&lat=24.66513710629684&lon=46.73768396893015&radius=10&radius_units=km&extras=url_m&format=json&nojsoncallback=1"
-    
-    func getNewPhotoCollection(pin: Pin) -> [URL] {
-        var resultURLArray: [URL] = []
+    func getNewPhotoCollection(pin: Pin, completion: @escaping ([String]?) -> Void) {
+        var resultURLArray: [String] = []
         
         let parameters = [
             FlickrAPIConstants.ParameterKeys.method : FlickrAPIConstants.ParameterValues.searchMethod,
@@ -56,7 +54,7 @@ class FlickrAPI {
                         
                         for photo in photoArray {
                             if let imageURLString = photo[FlickrAPIConstants.ResponseKeys.mediumURL] as? String {
-                                resultURLArray.append(URL(string: imageURLString)!)
+                                resultURLArray.append(imageURLString)
                             }
                         }
                     }
@@ -66,7 +64,7 @@ class FlickrAPI {
         
         task.resume()
         
-        return resultURLArray
+        completion(resultURLArray)
     }
     
     private func escapedParameters(_ parameters: [String : AnyObject]) -> String {

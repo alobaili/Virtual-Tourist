@@ -90,7 +90,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="128"/>
                             </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SJ9-pY-bic">
-                                <rect key="frame" x="0.0" y="192" width="375" height="475"/>
+                                <rect key="frame" x="0.0" y="192" width="375" height="407"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="P9t-Pa-5Df">
                                     <size key="itemSize" width="125" height="125"/>
@@ -130,23 +130,38 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1h3-y9-8zm">
+                                <rect key="frame" x="0.0" y="599" width="375" height="68"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="68" id="GFy-r4-iZ3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <state key="normal" title="New Collection"/>
+                                <connections>
+                                    <action selector="newCollectionButtonTapped:" destination="vQY-Y2-6BI" eventType="touchUpInside" id="QJ6-k6-jsB"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="L9a-QN-GEo" firstAttribute="bottom" secondItem="fwv-6l-rCa" secondAttribute="bottom" constant="475" id="0wr-59-GcB"/>
                             <constraint firstItem="fwv-6l-rCa" firstAttribute="leading" secondItem="L9a-QN-GEo" secondAttribute="leading" id="1ee-4R-oub"/>
+                            <constraint firstItem="1h3-y9-8zm" firstAttribute="top" secondItem="SJ9-pY-bic" secondAttribute="bottom" id="NTi-m1-sO5"/>
                             <constraint firstItem="fwv-6l-rCa" firstAttribute="trailing" secondItem="L9a-QN-GEo" secondAttribute="trailing" id="QgF-GL-yki"/>
                             <constraint firstItem="SJ9-pY-bic" firstAttribute="trailing" secondItem="L9a-QN-GEo" secondAttribute="trailing" id="ciD-pE-gLQ"/>
+                            <constraint firstItem="1h3-y9-8zm" firstAttribute="leading" secondItem="L9a-QN-GEo" secondAttribute="leading" id="dxb-eT-bL8"/>
                             <constraint firstItem="SJ9-pY-bic" firstAttribute="leading" secondItem="L9a-QN-GEo" secondAttribute="leading" id="imY-qa-gGZ"/>
+                            <constraint firstItem="L9a-QN-GEo" firstAttribute="trailing" secondItem="1h3-y9-8zm" secondAttribute="trailing" id="laI-y9-YkX"/>
                             <constraint firstItem="SJ9-pY-bic" firstAttribute="top" secondItem="fwv-6l-rCa" secondAttribute="bottom" id="pif-e8-uS9"/>
                             <constraint firstItem="fwv-6l-rCa" firstAttribute="top" secondItem="L9a-QN-GEo" secondAttribute="top" id="tBF-lB-xX2"/>
-                            <constraint firstItem="SJ9-pY-bic" firstAttribute="bottom" secondItem="L9a-QN-GEo" secondAttribute="bottom" id="weW-WF-qoo"/>
+                            <constraint firstItem="L9a-QN-GEo" firstAttribute="bottom" secondItem="1h3-y9-8zm" secondAttribute="bottom" id="vij-Vm-K2b"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="L9a-QN-GEo"/>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="SJ9-pY-bic" id="qYc-y8-4Ra"/>
                         <outlet property="mapView" destination="fwv-6l-rCa" id="cv7-9t-BAa"/>
+                        <outlet property="newCollectionButton" destination="1h3-y9-8zm" id="kjI-5q-lam"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fEL-hv-8aM" userLabel="First Responder" sceneMemberID="firstResponder"/>
