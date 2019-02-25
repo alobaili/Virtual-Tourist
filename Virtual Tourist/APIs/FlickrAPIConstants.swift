@@ -23,6 +23,7 @@ struct FlickrAPIConstants {
         static let format = "format"
         static let noJSONCallback = "nojsoncallback"
         static let page = "page"
+        static let perPage = "per_page"
     }
     
     struct ParameterValues {
@@ -33,7 +34,8 @@ struct FlickrAPIConstants {
         static let radius = "5"
         static let radiusUnit = "km"
         static let mediumURL = "url_m"
-        static let randomInt = Int(arc4random_uniform(UInt32(100)))
+        static let randomInt = Int(arc4random_uniform(UInt32(50)))
+        static let pageLimit = "10"
     }
     
     struct ResponseKeys {

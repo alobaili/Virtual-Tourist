@@ -106,7 +106,11 @@ class TravelLocationsMapViewController: UIViewController, NSFetchedResultsContro
             pin.longitude = coordinate.longitude
             
             // save the pin to the view context.
-            try? dataController.viewContext.save()
+            do {
+                try dataController.viewContext.save()
+            } catch {
+                print("error saving view context: \(error.localizedDescription)")
+            }
             
             // create a new annotation from the pin and present it in the map view.
             let annotation = convertToAnnotation(pin: pin)

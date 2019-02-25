@@ -22,7 +22,7 @@ class PhotoAlbumViewController: UIViewController {
     var dataController: DataController!
     var pin: Pin!
     var fetchedResultsController: NSFetchedResultsController<Photo>!
-    var imageURLs: [URL] = []
+    var imageURLs: [URL] = [URL]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,19 +33,18 @@ class PhotoAlbumViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupFetchedResultsController()
-        print("lat: \(pin.latitude) lon: \(pin.longitude)")
         prepareMapView()
         FlickrAPI.shared.getNewPhotoCollection(pin: pin) { (imageURLStrings) in
             guard imageURLStrings != nil else {
+                print("imageURLStrings is nil")
                 return
             }
-            
             for imageURLString in imageURLStrings! {
                 self.imageURLs.append(URL(string: imageURLString)!)
             }
+            self.downloadImages()
         }
-        downloadImages()
+        setupFetchedResultsController()
     }
     
     @IBAction func newCollectionButtonTapped(_ sender: UIButton) {
@@ -86,6 +85,7 @@ class PhotoAlbumViewController: UIViewController {
     
     func downloadImages() {
         if (fetchedResultsController.fetchedObjects?.isEmpty)! {
+            print("attempting to download \(imageURLs.count) URLs")
             // There are photos
             for url in imageURLs {
                 URLSession.shared.dataTask(with: url) { data, response, error in
@@ -175,6 +175,10 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         newCollectionButton.isEnabled = true
         return cell
     }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
 }
 
 extension PhotoAlbumViewController: UICollectionViewDelegate {
@@ -187,5 +191,20 @@ extension PhotoAlbumViewController: UICollectionViewDelegate {
 }
 
 extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
-    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        switch type {
+        case .insert:
+            guard let newIndexPath = newIndexPath else {return}
+            self.collectionView.insertItems(at: [newIndexPath])
+        case .delete:
+            guard let indexPath = indexPath else {return}
+            self.collectionView.deleteItems(at: [indexPath])
+        case .move:
+            guard let indexPath = indexPath,  let newIndexPath = newIndexPath else { return }
+            self.collectionView.moveItem(at: indexPath, to: newIndexPath)
+        case .update:
+            guard let indexPath = indexPath else { return }
+            self.collectionView.reloadItems(at: [indexPath])
+        }
+    }
 }

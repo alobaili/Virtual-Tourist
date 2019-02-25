@@ -19,7 +19,7 @@ class FlickrAPI {
     var session = URLSession.shared
     
     func getNewPhotoCollection(pin: Pin, completion: @escaping ([String]?) -> Void) {
-        var resultURLArray: [String] = []
+        var resultURLArray: [String] = [String]()
         
         let parameters = [
             FlickrAPIConstants.ParameterKeys.method : FlickrAPIConstants.ParameterValues.searchMethod,
@@ -31,7 +31,8 @@ class FlickrAPI {
             FlickrAPIConstants.ParameterKeys.extras : FlickrAPIConstants.ParameterValues.mediumURL,
             FlickrAPIConstants.ParameterKeys.format : FlickrAPIConstants.ParameterValues.responseFormat,
             FlickrAPIConstants.ParameterKeys.noJSONCallback : FlickrAPIConstants.ParameterValues.disableJSONCallback,
-            FlickrAPIConstants.ParameterKeys.page : FlickrAPIConstants.ParameterValues.randomInt
+            FlickrAPIConstants.ParameterKeys.page : FlickrAPIConstants.ParameterValues.randomInt,
+            FlickrAPIConstants.ParameterKeys.perPage : FlickrAPIConstants.ParameterValues.pageLimit
             ] as [String : AnyObject]
         let url = URL(string: "\(FlickrAPIConstants.baseURL)\(escapedParameters(parameters))")!
         
@@ -51,20 +52,17 @@ class FlickrAPI {
                     }
                     
                     if let photosDictionary = parsedResult[FlickrAPIConstants.ResponseKeys.photos] as? [String : AnyObject], let photoArray = photosDictionary[FlickrAPIConstants.ResponseKeys.photo] as? [[String : AnyObject]] {
-                        
                         for photo in photoArray {
                             if let imageURLString = photo[FlickrAPIConstants.ResponseKeys.mediumURL] as? String {
                                 resultURLArray.append(imageURLString)
                             }
                         }
+                        completion(resultURLArray)
                     }
                 }
             }
         }
-        
         task.resume()
-        
-        completion(resultURLArray)
     }
     
     private func escapedParameters(_ parameters: [String : AnyObject]) -> String {

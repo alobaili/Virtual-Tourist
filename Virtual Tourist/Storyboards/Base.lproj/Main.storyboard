@@ -160,6 +160,7 @@
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="SJ9-pY-bic" id="qYc-y8-4Ra"/>
+                        <outlet property="flowLayout" destination="P9t-Pa-5Df" id="9o0-7r-Ddw"/>
                         <outlet property="mapView" destination="fwv-6l-rCa" id="cv7-9t-BAa"/>
                         <outlet property="newCollectionButton" destination="1h3-y9-8zm" id="kjI-5q-lam"/>
                     </connections>
