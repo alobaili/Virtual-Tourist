@@ -23,16 +23,7 @@ class TravelLocationsMapViewController: UIViewController, NSFetchedResultsContro
     
     var selectedPin: Pin!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tapToDeleteView.isHidden = true
-        
-        // Retrieve the map region.
-        let center = CLLocationCoordinate2D(latitude: UserDefaults.standard.double(forKey: "Latitude"), longitude: UserDefaults.standard.double(forKey: "Longitude"))
-        let span = MKCoordinateSpan(latitudeDelta: UserDefaults.standard.double(forKey: "DeltaLatitude"), longitudeDelta: UserDefaults.standard.double(forKey: "DeltaLongitude"))
-        mapView.region = MKCoordinateRegion(center: center, span: span)
-        
+    fileprivate func setUpFetchedResultsController() {
         // Fetch pins from the data controller.
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
         let sortDiscreptor = NSSortDescriptor(key: "latitude", ascending: false)
@@ -51,6 +42,23 @@ class TravelLocationsMapViewController: UIViewController, NSFetchedResultsContro
         if let result = fetchedResultsController.fetchedObjects {
             populateAnnotations(from: result)
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tapToDeleteView.isHidden = true
+        
+        // Retrieve the map region.
+        let center = CLLocationCoordinate2D(latitude: UserDefaults.standard.double(forKey: "Latitude"), longitude: UserDefaults.standard.double(forKey: "Longitude"))
+        let span = MKCoordinateSpan(latitudeDelta: UserDefaults.standard.double(forKey: "DeltaLatitude"), longitudeDelta: UserDefaults.standard.double(forKey: "DeltaLongitude"))
+        mapView.region = MKCoordinateRegion(center: center, span: span)
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setUpFetchedResultsController()
     }
     
     override func viewDidDisappear(_ animated: Bool) {

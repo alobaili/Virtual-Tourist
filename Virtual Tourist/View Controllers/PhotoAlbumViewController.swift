@@ -27,6 +27,22 @@ class PhotoAlbumViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        prepareMapView()
+    }
+    
+    func prepareMapView() {
+        let annotation = MKPointAnnotation()
+        
+        annotation.coordinate.latitude = pin.latitude
+        annotation.coordinate.longitude = pin.longitude
+        
+        mapView.addAnnotation(annotation)
+        
+        mapView.centerCoordinate = annotation.coordinate
+        
+        mapView.region.span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+        
+        mapView.isUserInteractionEnabled = false
     }
 }
 

@@ -17,6 +17,7 @@
 		4B6DA78622181B890030B919 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6DA78522181B890030B919 /* ActivityIndicator.swift */; };
 		4B90587F22231E04007F6EAE /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B90587E22231E04007F6EAE /* PhotoAlbumViewController.swift */; };
 		4B905881222409B9007F6EAE /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B905880222409B9007F6EAE /* CollectionViewCell.swift */; };
+		4B90588422240CF0007F6EAE /* FlickrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B90588322240CF0007F6EAE /* FlickrAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		4B6DA78522181B890030B919 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		4B90587E22231E04007F6EAE /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 		4B905880222409B9007F6EAE /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		4B90588322240CF0007F6EAE /* FlickrAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +72,7 @@
 				4B6DA7812217F1B00030B919 /* Storyboards */,
 				4B6DA7802217F1A20030B919 /* Assets */,
 				4B6DA77F2217F1770030B919 /* View Controllers */,
-				4B6DA782221802930030B919 /* API */,
+				4B6DA782221802930030B919 /* APIs */,
 				4B6DA7782217F1040030B919 /* Info.plist */,
 				4B6DA78522181B890030B919 /* ActivityIndicator.swift */,
 			);
@@ -112,11 +114,12 @@
 			path = Storyboards;
 			sourceTree = "<group>";
 		};
-		4B6DA782221802930030B919 /* API */ = {
+		4B6DA782221802930030B919 /* APIs */ = {
 			isa = PBXGroup;
 			children = (
+				4B90588322240CF0007F6EAE /* FlickrAPI.swift */,
 			);
-			path = API;
+			path = APIs;
 			sourceTree = "<group>";
 		};
 		4B905882222409D1007F6EAE /* Views */ = {
@@ -205,6 +208,7 @@
 				4B6DA784221817350030B919 /* DataController.swift in Sources */,
 				4B6DA76A2217F1020030B919 /* AppDelegate.swift in Sources */,
 				4B90587F22231E04007F6EAE /* PhotoAlbumViewController.swift in Sources */,
+				4B90588422240CF0007F6EAE /* FlickrAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
