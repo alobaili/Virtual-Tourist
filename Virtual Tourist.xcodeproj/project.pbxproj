@@ -16,6 +16,7 @@
 		4B6DA784221817350030B919 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6DA783221817350030B919 /* DataController.swift */; };
 		4B6DA78622181B890030B919 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6DA78522181B890030B919 /* ActivityIndicator.swift */; };
 		4B90587F22231E04007F6EAE /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B90587E22231E04007F6EAE /* PhotoAlbumViewController.swift */; };
+		4B905881222409B9007F6EAE /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B905880222409B9007F6EAE /* CollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		4B6DA783221817350030B919 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		4B6DA78522181B890030B919 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		4B90587E22231E04007F6EAE /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		4B905880222409B9007F6EAE /* CollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		4B6DA7682217F1020030B919 /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
+				4B905882222409D1007F6EAE /* Views */,
 				4B6DA7692217F1020030B919 /* AppDelegate.swift */,
 				4B6DA77E2217F1110030B919 /* Model */,
 				4B6DA7812217F1B00030B919 /* Storyboards */,
@@ -114,6 +117,14 @@
 			children = (
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		4B905882222409D1007F6EAE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4B905880222409B9007F6EAE /* CollectionViewCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,6 +201,7 @@
 				4B6DA76C2217F1020030B919 /* TravelLocationsMapViewController.swift in Sources */,
 				4B6DA78622181B890030B919 /* ActivityIndicator.swift in Sources */,
 				4B6DA7722217F1020030B919 /* Virtual_Tourist.xcdatamodeld in Sources */,
+				4B905881222409B9007F6EAE /* CollectionViewCell.swift in Sources */,
 				4B6DA784221817350030B919 /* DataController.swift in Sources */,
 				4B6DA76A2217F1020030B919 /* AppDelegate.swift in Sources */,
 				4B90587F22231E04007F6EAE /* PhotoAlbumViewController.swift in Sources */,

@@ -14,11 +14,8 @@ import MapKit
 class PhotoAlbumViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var photo: UIImageView!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var collectionViewCell: UICollectionViewCell!
     
+    @IBOutlet weak var collectionView: UICollectionView!    
     
     var dataController: DataController!
     var pin: Pin!
