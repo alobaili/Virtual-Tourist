@@ -24,12 +24,14 @@ class PhotoAlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
-        prepareFlowLayout()
+//        prepareFlowLayout()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("lat: \(pin.latitude) lon: \(pin.longitude)")
         prepareMapView()
+        FlickrAPI.shared.getNewPhotoCollection(pin: pin)
     }
     
     func prepareMapView() {
@@ -47,12 +49,12 @@ class PhotoAlbumViewController: UIViewController {
         mapView.isUserInteractionEnabled = false
     }
     
-    func prepareFlowLayout() {
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.minimumLineSpacing = 0
-        let dimention = (view.frame.size.width / 3)
-        flowLayout.itemSize = CGSize(width: dimention, height: dimention)
-    }
+//    func prepareFlowLayout() {
+//        flowLayout.minimumInteritemSpacing = 0
+//        flowLayout.minimumLineSpacing = 0
+//        let dimention = (view.frame.size.width / 3)
+//        flowLayout.itemSize = CGSize(width: dimention, height: dimention)
+//    }
 }
 
 extension PhotoAlbumViewController: UICollectionViewDelegate {
