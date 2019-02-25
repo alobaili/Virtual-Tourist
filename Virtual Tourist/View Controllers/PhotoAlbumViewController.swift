@@ -15,7 +15,8 @@ class PhotoAlbumViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
     
-    @IBOutlet weak var collectionView: UICollectionView!    
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     var dataController: DataController!
     var pin: Pin!
@@ -23,6 +24,7 @@ class PhotoAlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
+        prepareFlowLayout()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,6 +45,13 @@ class PhotoAlbumViewController: UIViewController {
         mapView.region.span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
         
         mapView.isUserInteractionEnabled = false
+    }
+    
+    func prepareFlowLayout() {
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
+        let dimention = (view.frame.size.width / 3)
+        flowLayout.itemSize = CGSize(width: dimention, height: dimention)
     }
 }
 

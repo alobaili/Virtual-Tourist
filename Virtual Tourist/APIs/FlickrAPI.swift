@@ -7,3 +7,12 @@
 //
 
 import Foundation
+
+
+class FlickrAPI {
+    
+    // Shared session
+    var session = URLSession.shared
+    
+    
+}
