@@ -38,6 +38,8 @@ class PhotoAlbumViewController: UIViewController {
     }
     
     @IBAction func newCollectionButtonTapped(_ sender: UIButton) {
+        // check connection
+        // alert
         guard let fetchedResults = self.fetchedResultsController.fetchedObjects else {
             return
         }
@@ -53,6 +55,7 @@ class PhotoAlbumViewController: UIViewController {
                 let photo = Photo(context: self.dataController.viewContext)
                 photo.url = imageURLString
                 photo.pin = self.pin
+                
             }
             try? self.dataController.viewContext.save()
         }
@@ -75,18 +78,6 @@ class PhotoAlbumViewController: UIViewController {
     }
     
     func downloadImage(photo: Photo, completion: @escaping (_ isFinished: Bool) -> Void) {
-        URLSession.shared.dataTask(with: URL(string: photo.url!)!) { data, response, error in
-            if error == nil {
-                if let data = data {
-                    photo.imageData = data
-                    try? self.dataController.viewContext.save()
-                }
-                completion(true)
-            } else {
-                print(error!)
-                completion(false)
-            }
-        }.resume()
     }
     
     private func setupFetchedResultsController() {
@@ -101,7 +92,9 @@ class PhotoAlbumViewController: UIViewController {
         
         do {
             try fetchedResultsController.performFetch()
-            
+            if fetchedResultsController.fetchedObjects?.count == 0 {
+                newCollectionButtonTapped(UIButton())
+            }
         } catch {
             fatalError("The fetch couldn't be performed: \(error.localizedDescription)")
         }
@@ -124,7 +117,6 @@ class PhotoAlbumViewController: UIViewController {
     
     func deletePhoto(_ photo: Photo) {
         dataController.viewContext.delete(photo)
-        try? dataController.viewContext.save()
     }
     
     func prepareFlowLayout() {
@@ -132,19 +124,6 @@ class PhotoAlbumViewController: UIViewController {
         flowLayout.minimumLineSpacing = 0
         let dimention = (view.frame.size.width / 3)
         flowLayout.itemSize = CGSize(width: dimention, height: dimention)
-    }
-    
-    func updateUI(cell: CollectionViewCell, status: Bool) {
-        DispatchQueue.main.async {
-            if status == false {
-                cell.activityIndicator.isHidden = false
-                cell.activityIndicator.startAnimating()
-                
-            } else {
-                cell.activityIndicator.stopAnimating()
-                cell.activityIndicator.isHidden = true
-            }
-        }
     }
 }
 
@@ -160,20 +139,27 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         
         guard fetchedResultsController.object(at: indexPath).imageData != nil else {
-            downloadImage(photo: fetchedResultsController.object(at: indexPath)) { (isFinished) in
-                if isFinished == false {
-                    self.updateUI(cell: cell, status: false)
+            cell.activityIndicator.startAnimating()
+            let photo = fetchedResultsController.object(at: indexPath)
+            URLSession.shared.dataTask(with: URL(string: photo.url!)!) { data, response, error in
+                if error == nil {
+                    if let data = data {
+                        photo.imageData = data
+                        DispatchQueue.main.async {
+                            cell.imageView.image = UIImage(data: data)
+                        }
+                    }
                 } else {
-                    self.updateUI(cell: cell, status: true)
+                    print(error!)
                 }
-            }
+                DispatchQueue.main.async {
+                    cell.activityIndicator.stopAnimating()
+                }
+                }.resume()
             return cell
         }
-        
-        self.updateUI(cell: cell, status: false)
-        let dataArray = self.fetchedResultsController.fetchedObjects!
-        cell.imageView.image = UIImage(data: dataArray[indexPath.row].imageData!)
-        self.updateUI(cell: cell, status: true)
+        let object = self.fetchedResultsController.object(at: indexPath)
+        cell.imageView.image = UIImage(data: object.imageData!)
         newCollectionButton.isEnabled = true
         return cell
     }
