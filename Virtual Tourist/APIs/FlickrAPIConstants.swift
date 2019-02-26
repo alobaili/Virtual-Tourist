@@ -35,7 +35,7 @@ struct FlickrAPIConstants {
         static let radiusUnit = "km"
         static let mediumURL = "url_m"
         static let randomInt = Int(arc4random_uniform(UInt32(50)))
-        static let pageLimit = "10"
+        static let pageLimit = "20"
     }
     
     struct ResponseKeys {

@@ -27,6 +27,7 @@ class PhotoAlbumViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.delegate = self
+        collectionView.dataSource = self
         setupFetchedResultsController()
         prepareFlowLayout()
     }
@@ -34,23 +35,31 @@ class PhotoAlbumViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prepareMapView()
+        guard let fetchedResults = self.fetchedResultsController.fetchedObjects else {
+            return
+        }
+        for photo in fetchedResults {
+            dataController.viewContext.delete(photo)
+            try? dataController.viewContext.save()
+        }
         FlickrAPI.shared.getNewPhotoCollection(pin: pin) { (imageURLStrings) in
             guard imageURLStrings != nil else {
                 print("imageURLStrings is nil")
                 return
             }
             for imageURLString in imageURLStrings! {
-                self.imageURLs.append(URL(string: imageURLString)!)
+                let photo = Photo(context: self.dataController.viewContext)
+                photo.url = imageURLString
+                self.pin.addToPhotos(photo)
             }
+            try? self.dataController.viewContext.save()
         }
-        setupFetchedResultsController()
     }
     
     @IBAction func newCollectionButtonTapped(_ sender: UIButton) {
         guard let fetchedResults = self.fetchedResultsController.fetchedObjects else {
             return
         }
-        imageURLs.removeAll()
         for photo in fetchedResults {
             dataController.viewContext.delete(photo)
             try? dataController.viewContext.save()
@@ -60,8 +69,11 @@ class PhotoAlbumViewController: UIViewController {
                 return
             }
             for imageURLString in imageURLStrings! {
-                self.imageURLs.append(URL(string: imageURLString)!)
+                let photo = Photo(context: self.dataController.viewContext)
+                photo.url = imageURLString
+                self.pin.addToPhotos(photo)
             }
+            try? self.dataController.viewContext.save()
         }
     }
     
@@ -173,10 +185,6 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         self.updateUI(cell: cell, status: true)
         newCollectionButton.isEnabled = true
         return cell
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
     }
 }
 
