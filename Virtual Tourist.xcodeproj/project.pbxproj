@@ -69,12 +69,12 @@
 			isa = PBXGroup;
 			children = (
 				4B905882222409D1007F6EAE /* Views */,
-				4B6DA7692217F1020030B919 /* AppDelegate.swift */,
 				4B6DA77E2217F1110030B919 /* Model */,
 				4B6DA7812217F1B00030B919 /* Storyboards */,
 				4B6DA7802217F1A20030B919 /* Assets */,
 				4B6DA77F2217F1770030B919 /* View Controllers */,
 				4B6DA782221802930030B919 /* APIs */,
+				4B6DA7692217F1020030B919 /* AppDelegate.swift */,
 				4B6DA7782217F1040030B919 /* Info.plist */,
 			);
 			path = "Virtual Tourist";
