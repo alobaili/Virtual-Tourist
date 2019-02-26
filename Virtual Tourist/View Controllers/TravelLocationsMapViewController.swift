@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class TravelLocationsMapViewController: UIViewController, NSFetchedResultsControllerDelegate {
+class TravelLocationsMapViewController: UIViewController {
 
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var tapToDeleteView: UIView!
@@ -177,10 +177,15 @@ extension TravelLocationsMapViewController: MKMapViewDelegate {
             for pin in (fetchedResultsController?.fetchedObjects)! {
                 if pin.latitude == view.annotation?.coordinate.latitude && pin.longitude == view.annotation?.coordinate.longitude {
                     selectedPin = pin
+                    performSegue(withIdentifier: "toPhotoAlbum", sender: Any?.self)
+                    break
                 }
             }
-            
-            performSegue(withIdentifier: "toPhotoAlbum", sender: Any?.self)
         }
+    }
+}
+
+extension TravelLocationsMapViewController: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     }
 }

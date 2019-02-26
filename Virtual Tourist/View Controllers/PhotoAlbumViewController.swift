@@ -42,7 +42,6 @@ class PhotoAlbumViewController: UIViewController {
             for imageURLString in imageURLStrings! {
                 self.imageURLs.append(URL(string: imageURLString)!)
             }
-            self.downloadImages()
         }
         setupFetchedResultsController()
     }
@@ -64,7 +63,6 @@ class PhotoAlbumViewController: UIViewController {
                 self.imageURLs.append(URL(string: imageURLString)!)
             }
         }
-        downloadImages()
     }
     
     
@@ -83,22 +81,16 @@ class PhotoAlbumViewController: UIViewController {
         mapView.isUserInteractionEnabled = false
     }
     
-    func downloadImages() {
-        if (fetchedResultsController.fetchedObjects?.isEmpty)! {
-            print("attempting to download \(imageURLs.count) URLs")
-            // There are photos
-            for url in imageURLs {
-                URLSession.shared.dataTask(with: url) { data, response, error in
-                    if error == nil {
-                        if let data = data {
-                            self.addPhotoToViewContext(data: data)
-                        }
-                    } else {
-                        print(error!)
-                    }
-                }.resume()
+    func downloadImage(photo: Photo) {
+        URLSession.shared.dataTask(with: URL(string: photo.url!)!) { data, response, error in
+            if error == nil {
+                if let data = data {
+                    photo.imageData = data
+                }
+            } else {
+                print(error!)
             }
-        }
+        }.resume()
     }
     
     private func setupFetchedResultsController() {
@@ -168,6 +160,13 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         
+        guard fetchedResultsController.object(at: indexPath).imageData != nil else {
+            self.updateUI(cell: cell, status: false)
+            downloadImage(photo: fetchedResultsController.object(at: indexPath))
+            self.updateUI(cell: cell, status: true)
+            return cell
+        }
+        
         self.updateUI(cell: cell, status: false)
         let dataArray = self.fetchedResultsController.fetchedObjects!
         cell.imageView.image = UIImage(data: dataArray[indexPath.row].imageData!)
@@ -191,20 +190,7 @@ extension PhotoAlbumViewController: UICollectionViewDelegate {
 }
 
 extension PhotoAlbumViewController: NSFetchedResultsControllerDelegate {
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch type {
-        case .insert:
-            guard let newIndexPath = newIndexPath else {return}
-            self.collectionView.insertItems(at: [newIndexPath])
-        case .delete:
-            guard let indexPath = indexPath else {return}
-            self.collectionView.deleteItems(at: [indexPath])
-        case .move:
-            guard let indexPath = indexPath,  let newIndexPath = newIndexPath else { return }
-            self.collectionView.moveItem(at: indexPath, to: newIndexPath)
-        case .update:
-            guard let indexPath = indexPath else { return }
-            self.collectionView.reloadItems(at: [indexPath])
-        }
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        collectionView.reloadData()
     }
 }
