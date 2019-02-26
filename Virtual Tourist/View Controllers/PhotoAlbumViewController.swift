@@ -38,8 +38,6 @@ class PhotoAlbumViewController: UIViewController {
     }
     
     @IBAction func newCollectionButtonTapped(_ sender: UIButton) {
-        // check connection
-        // alert
         guard let fetchedResults = self.fetchedResultsController.fetchedObjects else {
             return
         }
