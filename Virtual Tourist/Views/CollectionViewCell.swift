@@ -12,4 +12,12 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    override func prepareForReuse() {
+//        DispatchQueue.main.async {
+            self.imageView.image = nil
+//            self.activityIndicator.isHidden = false
+            self.activityIndicator.startAnimating()
+//        }
+    }
 }

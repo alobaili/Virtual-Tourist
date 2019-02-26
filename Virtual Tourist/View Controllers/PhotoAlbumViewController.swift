@@ -93,14 +93,17 @@ class PhotoAlbumViewController: UIViewController {
         mapView.isUserInteractionEnabled = false
     }
     
-    func downloadImage(photo: Photo) {
+    func downloadImage(photo: Photo, completion: @escaping (_ isFinished: Bool) -> Void) {
         URLSession.shared.dataTask(with: URL(string: photo.url!)!) { data, response, error in
             if error == nil {
                 if let data = data {
                     photo.imageData = data
+                    try? self.dataController.viewContext.save()
                 }
+                completion(true)
             } else {
                 print(error!)
+                completion(false)
             }
         }.resume()
     }
@@ -150,13 +153,15 @@ class PhotoAlbumViewController: UIViewController {
     }
     
     func updateUI(cell: CollectionViewCell, status: Bool) {
-        if status == false {
-            cell.activityIndicator.isHidden = false
-            cell.activityIndicator.startAnimating()
-            
-        } else {
-            cell.activityIndicator.stopAnimating()
-            cell.activityIndicator.isHidden = true
+        DispatchQueue.main.async {
+            if status == false {
+                cell.activityIndicator.isHidden = false
+                cell.activityIndicator.startAnimating()
+                
+            } else {
+                cell.activityIndicator.stopAnimating()
+                cell.activityIndicator.isHidden = true
+            }
         }
     }
 }
@@ -173,9 +178,13 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! CollectionViewCell
         
         guard fetchedResultsController.object(at: indexPath).imageData != nil else {
-            self.updateUI(cell: cell, status: false)
-            downloadImage(photo: fetchedResultsController.object(at: indexPath))
-            self.updateUI(cell: cell, status: true)
+            downloadImage(photo: fetchedResultsController.object(at: indexPath)) { (isFinished) in
+                if isFinished == false {
+                    self.updateUI(cell: cell, status: false)
+                } else {
+                    self.updateUI(cell: cell, status: true)
+                }
+            }
             return cell
         }
         
