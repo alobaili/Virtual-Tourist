@@ -35,25 +35,6 @@ class PhotoAlbumViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         prepareMapView()
-        guard let fetchedResults = self.fetchedResultsController.fetchedObjects else {
-            return
-        }
-        for photo in fetchedResults {
-            dataController.viewContext.delete(photo)
-            try? dataController.viewContext.save()
-        }
-        FlickrAPI.shared.getNewPhotoCollection(pin: pin) { (imageURLStrings) in
-            guard imageURLStrings != nil else {
-                print("imageURLStrings is nil")
-                return
-            }
-            for imageURLString in imageURLStrings! {
-                let photo = Photo(context: self.dataController.viewContext)
-                photo.url = imageURLString
-                self.pin.addToPhotos(photo)
-            }
-            try? self.dataController.viewContext.save()
-        }
     }
     
     @IBAction func newCollectionButtonTapped(_ sender: UIButton) {
@@ -71,7 +52,7 @@ class PhotoAlbumViewController: UIViewController {
             for imageURLString in imageURLStrings! {
                 let photo = Photo(context: self.dataController.viewContext)
                 photo.url = imageURLString
-                self.pin.addToPhotos(photo)
+                photo.pin = self.pin
             }
             try? self.dataController.viewContext.save()
         }
@@ -143,6 +124,7 @@ class PhotoAlbumViewController: UIViewController {
     
     func deletePhoto(_ photo: Photo) {
         dataController.viewContext.delete(photo)
+        try? dataController.viewContext.save()
     }
     
     func prepareFlowLayout() {
@@ -200,8 +182,6 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
 extension PhotoAlbumViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let photoToDelete: Photo = fetchedResultsController.object(at: indexPath)
-        let indexArray : [IndexPath] = [indexPath]
-        self.collectionView.deleteItems(at: indexArray)
         deletePhoto(photoToDelete)
     }
 }
